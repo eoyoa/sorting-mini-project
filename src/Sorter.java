@@ -24,3 +24,10 @@ public interface Sorter {
   public <T> void sort(T[] values, Comparator<? super T> order);
 } // interface Sorter
 
+class SortUtils {
+  public static <T> void swap(T[] values, int i, int j) {
+    T temp = values[i];
+    values[i] = values[j];
+    values[j] = temp;
+  }
+}
