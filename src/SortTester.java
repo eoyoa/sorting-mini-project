@@ -3,6 +3,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -19,6 +20,7 @@ public abstract class SortTester {
   Sorter sorter;
 
   final int BIG_SIZE = Short.MAX_VALUE;
+  final int SHUFFLE_SEED = 42;
 
   Integer[] bigExpected;
 
@@ -39,7 +41,7 @@ public abstract class SortTester {
     bigReverseOrderedActual = tempRev.toArray(new Integer[0]);
 
     List<Integer> tempRand = Arrays.asList(Arrays.copyOf(bigExpected, BIG_SIZE));
-    Collections.shuffle(tempRand);
+    Collections.shuffle(tempRand, new Random(SHUFFLE_SEED));
     bigRandomOrderedActual = tempRand.toArray(new Integer[0]);
   }
 
