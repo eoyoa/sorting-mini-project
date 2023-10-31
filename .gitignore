@@ -25,3 +25,7 @@ replay_pid*
 
 # vim swap file
 *.swp
+
+# timsort files (bc of license)
+TimSort.java
+TimSortTester.java

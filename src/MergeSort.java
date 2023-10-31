@@ -57,17 +57,17 @@ public class MergeSort implements Sorter {
     int i2 = mid - lo;
 
     for (int i = lo; i < hi; i++) {
-      T toPut;
-
       if (i1 >= mid - lo) {
-        toPut = tempArr[i2++];
-      } else if (i2 >= hi - lo) {
-        toPut = tempArr[i1++];
-      } else {
-        toPut = comparator.compare(tempArr[i1], tempArr[i2]) <= 0 ? tempArr[i1++] : tempArr[i2++];
+        vals[i] = tempArr[i2++];
+        continue;
       }
-
-      vals[i] = toPut;
+      
+      if (i2 >= hi - lo) {
+        vals[i] = tempArr[i1++];
+        continue;
+      }
+      
+      vals[i] = comparator.compare(tempArr[i1], tempArr[i2]) <= 0 ? tempArr[i1++] : tempArr[i2++];
     }
   } // merge
 
