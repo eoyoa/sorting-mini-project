@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Comparator;
 
 /**
@@ -46,7 +47,7 @@ public class Quicksort implements Sorter {
     sort(values, order, pivotIndex, ub);
   }
 
-  public static <T> int partition(T[] arr, Comparator<? super T> compare, int lb, int ub) {
+  private static <T> int partition(T[] arr, Comparator<? super T> compare, int lb, int ub) {
     int pivotIndex = (lb + ub) / 2;
     SortUtils.swap(arr, lb, pivotIndex);
     T pivot = arr[lb];
@@ -55,16 +56,17 @@ public class Quicksort implements Sorter {
     int large = ub;
 
     while (small < large) {
-      T lowerValue = arr[small];
-      T upperValue = arr[large - 1];
-
-      if (compare.compare(lowerValue, pivot) <= 0) {
+      if (compare.compare(arr[small], pivot) <= 0) {
         small++;
-      } else if (compare.compare(upperValue, pivot) > 0) {
-        large--;
-      } else {
-        SortUtils.swap(arr, small, large - 1);
+        continue;
       }
+
+      if (compare.compare(arr[large - 1], pivot) > 0) {
+        large--;
+        continue;
+      }
+      
+      SortUtils.swap(arr, small, large - 1);
     }
 
     SortUtils.swap(arr, lb, small - 1);
