@@ -1,6 +1,9 @@
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -8,13 +11,38 @@ import org.junit.jupiter.api.Test;
  *
  * @author Your Name
  */
-public class SortTester {
+public abstract class SortTester {
 
   // +---------+-----------------------------------------------------
   // | Globals |
   // +---------+
 
   Sorter sorter;
+
+  final int BIG_SIZE = Short.MAX_VALUE;
+
+  Integer[] bigExpected;
+
+  Integer[] bigOrderedActual;
+  Integer[] bigReverseOrderedActual;
+  Integer[] bigRandomOrderedActual;
+
+  public SortTester() {
+    bigExpected = new Integer[BIG_SIZE];
+    for (int i = 0; i < BIG_SIZE; i++) {
+      bigExpected[i] = i;
+    }
+
+    bigOrderedActual = Arrays.copyOf(bigExpected, BIG_SIZE);
+
+    List<Integer> tempRev = Arrays.asList(Arrays.copyOf(bigExpected, BIG_SIZE));
+    Collections.reverse(tempRev);
+    bigReverseOrderedActual = tempRev.toArray(new Integer[0]);
+
+    List<Integer> tempRand = Arrays.asList(Arrays.copyOf(bigExpected, BIG_SIZE));
+    Collections.shuffle(tempRand);
+    bigRandomOrderedActual = tempRand.toArray(new Integer[0]);
+  }
 
   // +-------+-------------------------------------------------------
   // | Tests |
@@ -27,7 +55,7 @@ public class SortTester {
 
   @Test
   public void orderedStringTest() {
-    String[] original = { "alpha", "bravo", "charlie", "delta", "foxtrot" };
+    String[] original = {"alpha", "bravo", "charlie", "delta", "foxtrot"};
     String[] expected = original.clone();
     sorter.sort(original, (x, y) -> x.compareTo(y));
     assertArrayEquals(expected, original);
@@ -35,53 +63,45 @@ public class SortTester {
 
   @Test
   public void reverseOrderedStringTest() {
-    String[] original = { "foxtrot", "delta", "charlie", "bravo", "alpha" };
-    String[] expected = { "alpha", "bravo", "charlie", "delta", "foxtrot" };
+    String[] original = {"foxtrot", "delta", "charlie", "bravo", "alpha"};
+    String[] expected = {"alpha", "bravo", "charlie", "delta", "foxtrot"};
     sorter.sort(original, (x, y) -> x.compareTo(y));
     assertArrayEquals(expected, original);
   } // orderedStringTest
 
   // New test cases
   @Test
-  public void orderedIntegerTest() {
-     Integer[] original = { 1, 2, 3, 4, 5 };
-     Integer[] expected = original.clone();
-     sorter.sort(original, (x, y) -> x.compareTo(y));
-     assertArrayEquals(expected, original);
-  }
-
-  @Test
-  public void reverseOrderedIntegerTest() {
-     Integer[] original = { 5, 4, 3, 2, 1 };
-     Integer[] expected = { 1, 2, 3, 4, 5 };
-     sorter.sort(original, (x, y) -> x.compareTo(y));
-     assertArrayEquals(expected, original);
-  }
-
-  @Test
-  public void integersWithDupesTest() {
-     Integer[] original = { 5, 1, 3, 1, 3, 2, 6 };
-     Integer[] expected = { 1, 1, 2, 3, 3, 5, 6 };
-     sorter.sort(original, (x, y) -> x.compareTo(y));
-     assertArrayEquals(expected, original);
-  }
-
-  @Test
-  public void stringLengthTest() {
-    String[] original = { "alpha", "bravo", "charlie", "delta", "foxtrot" };
-    int[] expectedLengths = { 5, 5, 5, 7, 7 };
-    sorter.sort(original, (x, y) -> x.length() - y.length());
-    for (int i = 0; i < original.length; i++) {
-      assertEquals(expectedLengths[i], original[i].length());
-    }
-  }
-
-  @Test
-  public void floatTest() {
-    Float[] original = { -0.01f, 2f, 1f, -2f, 0f, 1.01f, 0.1f, 0.1f };
-    Float[] expected = { -2f, -0.01f, 0f, 0.1f, 0.1f, 1f, 1.01f, 2f };
+  public void emptyArrayTest() {
+    String[] original = {};
+    String[] expected = {};
     sorter.sort(original, (x, y) -> x.compareTo(y));
     assertArrayEquals(expected, original);
+  }
+
+  @Test
+  public void allNegativeTest() {
+    Integer[] original = { -7, -2, -3, -1, -4, -6, -5 };
+    Integer[] expected = { -7, -6, -5, -4, -3, -2, -1 };
+    sorter.sort(original, (x, y) -> x.compareTo(y));
+    assertArrayEquals(expected, original);
+  }
+
+  @Test
+  public void bigOrderedTest() {
+    sorter.sort(bigOrderedActual, (x, y) -> x.compareTo(y));
+    assertArrayEquals(bigExpected, bigOrderedActual);
+  }
+
+  @Test
+  public void bigReverseOrderedTest() {
+    sorter.sort(bigReverseOrderedActual, (x, y) -> x.compareTo(y));
+    assertArrayEquals(bigExpected, bigReverseOrderedActual);
+  }
+
+  @Test
+  public void bigRandomOrderedTest() {
+    sorter.sort(bigRandomOrderedActual, (x, y) -> x.compareTo(y));
+    assertArrayEquals(bigExpected, bigRandomOrderedActual);
   }
 
 } // class SortTester
