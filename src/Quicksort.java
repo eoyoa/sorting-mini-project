@@ -48,8 +48,7 @@ public class Quicksort implements Sorter {
   }
 
   private static <T> int partition(T[] arr, Comparator<? super T> compare, int lb, int ub) {
-    int pivotIndex = (lb + ub) / 2;
-    SortUtils.swap(arr, lb, pivotIndex);
+    medianOfThreePivot(arr, lb, ub, compare);
     T pivot = arr[lb];
 
     int small = lb + 1;
@@ -73,4 +72,19 @@ public class Quicksort implements Sorter {
 
     return small - 1;
   } // partition
+
+  private static <T> void medianOfThreePivot(T[] arr, int lb, int ub, Comparator<? super T> compare) {
+    int mid = (lb + ub) / 2;
+
+    if (compare.compare(arr[lb], arr[mid]) > 0)
+      SortUtils.swap(arr, lb, mid);
+
+    if (compare.compare(arr[lb], arr[ub - 1]) > 0)
+      SortUtils.swap(arr, lb, ub - 1);
+
+    if (compare.compare(arr[mid], arr[ub - 1]) > 0)
+      SortUtils.swap(arr, mid, ub - 1);
+
+    SortUtils.swap(arr, lb, mid);
+  }
 } // class Quicksort
