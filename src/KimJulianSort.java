@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Comparator;
 
 public class KimJulianSort implements Sorter {
@@ -7,7 +8,91 @@ public class KimJulianSort implements Sorter {
   @Override
   public <T> void sort(T[] values, Comparator<? super T> order) {
     if (twinswap(values, order))
-      new MergeSort().sort(values, order);
+      tailmerge(values, 2, order);
+  }
+
+  private static <T> void tailmerge(T[] values, int startSize, Comparator<? super T> order) {
+    T[] swap = Arrays.copyOf(values, values.length / 2);
+    int blockSize = startSize;
+    while (blockSize < values.length) {
+      for (int mergeStart = 0; mergeStart + blockSize < values.length; mergeStart += blockSize * 2) {
+        int lo = mergeStart;
+        int leftTail = lo + blockSize - 1;
+
+        if (order.compare(values[leftTail], values[leftTail + 1]) <= 0) {
+          // the left and right subarrays are in order
+          continue;
+        }
+
+        /**
+         * set proper mid and hi pointers!
+         */
+        int mid, hi;
+        if (mergeStart + blockSize * 2 <= values.length) {
+          mid = blockSize;
+          hi = lo + blockSize * 2;
+        } else {
+          // right block is too short, fix mid and hi pointers
+          mid = values.length - (mergeStart + blockSize);
+          hi = values.length;
+        }
+
+        /**
+         * skip unnecessary merging!
+         */
+        int rightTail = hi - 1;
+
+        while (order.compare(values[leftTail], values[rightTail]) <= 0) {
+          // we don't need to merge if the last left is already less than our
+          // current last right, so fix the pointers
+          hi--;
+          rightTail--;
+
+          mid--;
+        }
+
+        // copy only the part we will merge from right subarray into swap memory
+        int swapI = 0;
+        int rightI = lo + blockSize;
+
+        while (swapI < mid) {
+          swap[swapI++] = values[rightI++];
+        }
+        swapI--; // swap index is now at the last element in swap
+
+        /**
+         * start merging left to right!
+         */
+        int lastL = lo + blockSize - 1;
+        int lastR = hi - 1;
+
+        if (order.compare(values[lo], values[lo + blockSize]) <= 0) {
+          // current run is forward-like
+          values[lastR--] = values[lastL--];
+
+          while (swapI >= 0) {
+            while (order.compare(values[lastL], swap[swapI]) > 0) {
+              values[lastR--] = values[lastL--];
+            }
+            values[lastR--] = swap[swapI--];
+          }
+        } else {
+          // current run is unknown distribution
+          values[lastR--] = values[lastL--];
+
+          while (lastL >= lo) {
+            while (order.compare(values[lastL], swap[swapI]) <= 0) {
+              values[lastR--] = swap[swapI--];
+            }
+            values[lastR--] = values[lastL--];
+          }
+          while (swapI >= 0) {
+            values[lastR--] = swap[swapI--];
+          }
+        }
+      }
+      blockSize *= 2;
+    }
   }
 
   // returns if sorting should continue
@@ -38,7 +123,7 @@ public class KimJulianSort implements Sorter {
               // the array was reversed
               end = values.length - 1;
               reverseRange(values, start, end);
-              
+
               // don't merge sort, it is sorted
               return false;
             }
