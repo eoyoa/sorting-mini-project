@@ -4,7 +4,7 @@ import java.util.Comparator;
 public class KimJulianSort implements Sorter {
   public static Sorter SORTER = new KimJulianSort();
 
-  // simplified port of twinsort (https://github.com/scandum/twinsort) with comments
+  // port of twinsort (https://github.com/scandum/twinsort) with comments
   @Override
   public <T> void sort(T[] values, Comparator<? super T> order) {
     if (twinswap(values, order))
