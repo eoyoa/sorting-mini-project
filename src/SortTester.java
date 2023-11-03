@@ -81,8 +81,8 @@ public abstract class SortTester {
 
   @Test
   public void allNegativeTest() {
-    Integer[] original = { -7, -2, -3, -1, -4, -6, -5 };
-    Integer[] expected = { -7, -6, -5, -4, -3, -2, -1 };
+    Integer[] original = {-7, -2, -3, -1, -4, -6, -5};
+    Integer[] expected = {-7, -6, -5, -4, -3, -2, -1};
     sorter.sort(original, (x, y) -> x.compareTo(y));
     assertArrayEquals(expected, original);
   }

@@ -78,7 +78,8 @@ public class KimJulianSort implements Sorter {
     T[] swap = Arrays.copyOf(values, values.length / 2);
     int blockSize = startSize;
     while (blockSize < values.length) {
-      for (int mergeStart = 0; mergeStart + blockSize < values.length; mergeStart += blockSize * 2) {
+      for (int mergeStart = 0; mergeStart + blockSize < values.length; mergeStart +=
+          blockSize * 2) {
         int lo = mergeStart;
         int leftTail = lo + blockSize - 1;
 

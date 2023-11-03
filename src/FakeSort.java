@@ -1,8 +1,7 @@
 import java.util.Comparator;
 
 /**
- * Something that fails to sort.  Intended primarily to allow us to wath
- * tests fail.
+ * Something that fails to sort. Intended primarily to allow us to wath tests fail.
  *
  * @author Samuel A. Rebelsky
  */
@@ -25,8 +24,7 @@ public class FakeSort implements Sorter {
   /**
    * Create a sorter.
    */
-  FakeSort() {
-  } // FakeSort()
+  FakeSort() {} // FakeSort()
 
   // +---------+-----------------------------------------------------
   // | Methods |

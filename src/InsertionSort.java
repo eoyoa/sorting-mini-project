@@ -24,8 +24,7 @@ public class InsertionSort implements Sorter {
   /**
    * Create a sorter.
    */
-  InsertionSort() {
-  } // InsertionSort()
+  InsertionSort() {} // InsertionSort()
 
   // +---------+-----------------------------------------------------
   // | Methods |

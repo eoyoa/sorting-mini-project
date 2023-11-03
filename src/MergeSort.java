@@ -37,7 +37,8 @@ public class MergeSort implements Sorter {
   } // sort(T[], Comparator<? super T>
 
   public <T> void sort(T[] values, Comparator<? super T> order, int lo, int hi) {
-    if (hi - lo <= 1) return;
+    if (hi - lo <= 1)
+      return;
 
     int mid = (lo + hi) / 2;
     sort(values, order, lo, mid);
@@ -61,12 +62,12 @@ public class MergeSort implements Sorter {
         vals[i] = tempArr[i2++];
         continue;
       }
-      
+
       if (i2 >= hi - lo) {
         vals[i] = tempArr[i1++];
         continue;
       }
-      
+
       vals[i] = comparator.compare(tempArr[i1], tempArr[i2]) <= 0 ? tempArr[i1++] : tempArr[i2++];
     }
   } // merge
