@@ -4,7 +4,7 @@ import java.util.Comparator;
 /**
  * Sort using merge sort.
  *
- * @author Your Name Here
+ * @author Julian Kim
  */
 
 public class MergeSort implements Sorter {
