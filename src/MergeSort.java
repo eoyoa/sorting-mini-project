@@ -54,21 +54,33 @@ public class MergeSort implements Sorter {
   static <T> void merge(T[] vals, int lo, int mid, int hi, Comparator<? super T> comparator) {
     T[] tempArr = Arrays.copyOfRange(vals, lo, hi);
 
-    int i1 = 0;
-    int i2 = mid - lo;
+    final int SECOND_HALF_START = mid - lo;
+    final int LENGTH = hi - lo;
+
+    /* make two pointers */
+    // first half pointer
+    int p1 = 0;
+    // second half pointer
+    int p2 = SECOND_HALF_START;
+
 
     for (int i = lo; i < hi; i++) {
-      if (i1 >= mid - lo) {
-        vals[i] = tempArr[i2++];
+      if (p1 >= SECOND_HALF_START) {
+        // if you have exhausted all objects in first half
+        vals[i] = tempArr[p2++];
         continue;
       }
 
-      if (i2 >= hi - lo) {
-        vals[i] = tempArr[i1++];
+      if (p2 >= LENGTH) {
+        // if you have exhausted all objects in second half
+        vals[i] = tempArr[p1++];
         continue;
       }
 
-      vals[i] = comparator.compare(tempArr[i1], tempArr[i2]) <= 0 ? tempArr[i1++] : tempArr[i2++];
+      // otherwise, choose the smaller object
+      vals[i] = comparator.compare(tempArr[p1], tempArr[p2]) <= 0
+        ? tempArr[p1++]
+        : tempArr[p2++];
     }
   } // merge
 
